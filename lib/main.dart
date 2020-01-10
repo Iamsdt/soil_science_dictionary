@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soil_science_dictionary/Dashboard.dart';
 import 'ui/splash.dart';
@@ -29,15 +30,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  String dummyLine =
+      "This is a very long subtitle subtile and it's need to be take whole line. This is a very long subtitle subtile and it's need to be take whole line";
+
   int currentTab = 0; // to keep track of active tab index
-  final List<Widget> screens = [
-    Dashboard(),
-    //Chat(),
-    //Profile(),
-    //Settings(),
-  ]; // to store nested tabs
-  final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = Dashboard(); // Our first view in viewport
+
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +69,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                     Expanded(
                       child: TextFormField(
+                        controller: _controller,
                         decoration: InputDecoration(
                           hintText: "Search...",
                           border: InputBorder.none,
                         ),
+                        autofocus: false,
                       ),
                     ),
                     Padding(
@@ -98,7 +106,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ),
             Expanded(
               child: ListView(
-                children: <Widget>[],
+                children: <Widget>[
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                  getListItem("This is a title", dummyLine),
+                ],
               ),
             )
           ],
@@ -109,7 +127,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           MyFlutterApp.help_circled,
           size: 28.0,
         ),
-        onPressed: () {},
+        onPressed: () {
+          var subtitle =
+              dummyLine + dummyLine + dummyLine + dummyLine + dummyLine;
+          showRandomWordSheet(context, "THis is title", subtitle);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomAppBar(
@@ -228,6 +250,107 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void showRandomWordSheet(BuildContext context, title, subtitle) {
+    showModalBottomSheet<dynamic>(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => Wrap(
+              children: <Widget>[
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 6.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.w700),
+                          maxLines: 1,
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(),
+                        child: IconButton(
+                          icon: Icon(
+                            MyFlutterApp.heart,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            //todo implement text to output
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: IconButton(
+                          icon: Icon(
+                            MyFlutterApp.volume,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () {
+                            //todo implement text to output
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
+                  child: Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    ),
+                    maxLines: 10,
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
+              ],
+            ));
+  }
+
+  Widget getListItem(title, subtitle) {
+    return InkWell(
+      splashColor: Colors.blue,
+      onTap: (){
+
+      },
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+              maxLines: 1,
+              textAlign: TextAlign.justify,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 14.0,
+              ),
+              maxLines: 2,
+              textAlign: TextAlign.justify,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(
+              height: 15.0,
+            )
+          ],
+        ),
+        padding: EdgeInsets.only(left: 15.0, right: 15.0),
       ),
     );
   }
